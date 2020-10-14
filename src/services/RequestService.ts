@@ -21,3 +21,15 @@ export const getMealsByCategory = async (
     return [];
   }
 };
+
+export const getMealById = async (
+  id: string,
+): Promise<MealRecipe | Partial<MealRecipe>> => {
+  try {
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+    const response = await axios.get<MealRecipeResponse>(url);
+    return response.data.meals[0];
+  } catch (error) {
+    return {};
+  }
+};
