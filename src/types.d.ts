@@ -20,4 +20,8 @@ declare global {
     RootStackParamList,
     'RecipeDetail'
   >;
+  type MealRecipe = {
+    strMeal: string;
+    idMeal: string;
+  };
 }
