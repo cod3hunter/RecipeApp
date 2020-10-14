@@ -70,4 +70,10 @@ declare global {
   type MealRecipeResponse = {
     meals: MealRecipe[];
   };
+  type MealCategory = {
+    strCategory: string;
+  };
+  type MealCategoryResponse = {
+    categories: MealCategory[];
+  };
 }

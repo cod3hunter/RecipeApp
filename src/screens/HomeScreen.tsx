@@ -1,6 +1,9 @@
 import React, {ReactText, useState} from 'react';
+import {ActivityIndicator} from 'react-native-paper';
 import styled from 'styled-components/native';
 import {CategoryPicker, RecipeList} from '../components';
+import useFetchAllCategories from '../hooks/useFetchAllCategories';
+import useFetchMealsByCategory from '../hooks/useFetchMealsByCategory';
 
 const Container = styled.View`
   flex: 1;
@@ -12,26 +15,28 @@ type Props = {
   navigation: HomeScreenNavigatorProp;
 };
 
-const categoriesData: string[] = ['Beef', 'Chicken', 'Dessert'];
-
-const mealsData: MealRecipe[] = [
-  {strMeal: 'Baked salmon', idMeal: '1234'},
-  {strMeal: 'Baked salmon', idMeal: '1235'},
-  {strMeal: 'Baked salmon', idMeal: '1236'},
-  {strMeal: 'Baked salmon', idMeal: '1237'},
-];
-
 const HomeScreen: React.FC<Props> = ({navigation}) => {
-  const [selectedCategory, setSelectedCategory] = useState<ReactText>('1');
+  const [selectedCategory, setSelectedCategory] = useState<ReactText>('Beef');
+  const categories = useFetchAllCategories();
+  const meals = useFetchMealsByCategory(selectedCategory);
+
+  if (meals.length < 1) {
+    return (
+      <Container>
+        <ActivityIndicator />
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <CategoryPicker
-        data={categoriesData}
+        data={categories}
         selectedValue={selectedCategory}
         onValueChange={setSelectedCategory}
       />
       <RecipeList
-        data={mealsData}
+        data={meals}
         onPress={(id) => navigation.navigate('RecipeDetail', {id})}
       />
     </Container>
